@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name             = "FLAnimatedImage"
-  spec.version          = "1.0.15"
+  spec.version          = "1.0.16"
   spec.summary          = "Performant animated GIF engine for iOS"
   spec.description      = <<-DESC
                         - Plays multiple GIFs simultaneously with a playback speed comparable to desktop browsers
