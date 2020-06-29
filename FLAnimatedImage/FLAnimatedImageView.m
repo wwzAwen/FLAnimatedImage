@@ -331,25 +331,10 @@ static NSUInteger gcd(NSUInteger a, NSUInteger b)
 {
     if (self.animatedImage) {
         self.displayLink.paused = YES;
-        [self _stopAndStayOnTheLastFrameImage];
     } else {
         [super stopAnimating];
     }
 }
-/// 停留在最后一帧
-- (void)_stopAndStayOnTheLastFrameImage {
-    if (self.animatedImage.loopCount == 1) { // 当gif播放次数只有一次时， 播放异常（移除window等）暂停后停留在最后一帧
-        UIImage *lastImage = [self.animatedImage imageLazilyCachedAtIndex:self.animatedImage.frameCount - 1];
-        if (lastImage) {
-            self.currentFrame = lastImage;
-            if (self.needsDisplayWhenImageBecomesAvailable) {
-                [self.layer setNeedsDisplay];
-                self.needsDisplayWhenImageBecomesAvailable = NO;
-            }
-        }
-    }
-}
-
 
 - (BOOL)isAnimating
 {
@@ -381,7 +366,7 @@ static NSUInteger gcd(NSUInteger a, NSUInteger b)
 // Just update our cached value whenever the animated image or visibility (window, superview, hidden, alpha) is changed.
 - (void)updateShouldAnimate
 {
-    BOOL isVisible = self.window && self.superview && ![self isHidden] && self.alpha > 0.0;
+    BOOL isVisible = self.window && self.superview && ![self isHidden] && self.alpha > 0.0 && self.loopCountdown > 0;
     self.shouldAnimate = self.animatedImage && isVisible;
 }
 
@@ -424,6 +409,7 @@ static NSUInteger gcd(NSUInteger a, NSUInteger b)
                     
                     if (self.loopCountdown == 0) {
                         [self stopAnimating];
+                        [self _stopAndStayOnTheLastFrameImage];
                         return;
                     }
                     self.currentFrameIndex = 0;
@@ -444,6 +430,21 @@ static NSUInteger gcd(NSUInteger a, NSUInteger b)
         self.currentFrameIndex++;
     }
 }
+
+/// 停留在最后一帧
+- (void)_stopAndStayOnTheLastFrameImage {
+    if (self.animatedImage.loopCount == 1) { // 当gif播放次数只有一次时， 播放异常（移除window等）暂停后停留在最后一帧
+        UIImage *lastImage = [self.animatedImage imageLazilyCachedAtIndex:self.animatedImage.frameCount - 1];
+        if (lastImage) {
+            self.currentFrame = lastImage;
+            if (self.needsDisplayWhenImageBecomesAvailable) {
+                [self.layer setNeedsDisplay];
+                self.needsDisplayWhenImageBecomesAvailable = NO;
+            }
+        }
+    }
+}
+
 
 + (NSString *)defaultRunLoopMode
 {
