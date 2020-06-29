@@ -341,7 +341,7 @@ static NSUInteger gcd(NSUInteger a, NSUInteger b)
     if (self.animatedImage.loopCount == 1) { // 当gif播放次数只有一次时， 播放异常（移除window等）暂停后停留在最后一帧
         UIImage *lastImage = [self.animatedImage imageLazilyCachedAtIndex:self.animatedImage.frameCount - 1];
         if (lastImage) {
-            self.currentFrame = image;
+            self.currentFrame = lastImage;
             if (self.needsDisplayWhenImageBecomesAvailable) {
                 [self.layer setNeedsDisplay];
                 self.needsDisplayWhenImageBecomesAvailable = NO;
