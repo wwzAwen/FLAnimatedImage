@@ -409,7 +409,6 @@ static NSUInteger gcd(NSUInteger a, NSUInteger b)
                     
                     if (self.loopCountdown == 0) {
                         [self stopAnimating];
-                        [self _stopAndStayOnTheLastFrameImage];
                         return;
                     }
                     self.currentFrameIndex = 0;
