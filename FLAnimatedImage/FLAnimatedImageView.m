@@ -437,10 +437,7 @@ static NSUInteger gcd(NSUInteger a, NSUInteger b)
         UIImage *lastImage = [self.animatedImage imageLazilyCachedAtIndex:self.animatedImage.frameCount - 1];
         if (lastImage) {
             self.currentFrame = lastImage;
-            if (self.needsDisplayWhenImageBecomesAvailable) {
-                [self.layer setNeedsDisplay];
-                self.needsDisplayWhenImageBecomesAvailable = NO;
-            }
+            [self.layer setNeedsDisplay];
         }
     }
 }
